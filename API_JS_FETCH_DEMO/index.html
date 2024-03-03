@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+    body{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .search{
+      margin: 40px;
+
+    }
+    input{
+      width: 360px;
+      height: 36px;
+      margin: 10px;
+    }
+    button{
+      width: 80px;
+      height: 36px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="search">
+    <input type="text" placeholder="Any image you want to search" id="searching"> 
+    <button onclick="searchimg()">search</button>
+  
+  </div>
+
+  <div id="images"></div>
+
+</body>
+
+<script>
+
+let searching = document.getElementById("searching")
+
+function searchimg(){ 
+
+fetch('https://api.pexels.com/v1/search?query='+ searching.value +'&per_page=10',{
+    headers: {
+      'Authorization': '43KrU076uEJRTf60sXGgFHFpTc6gTgIp2QuwdK4Sp9haAc7MnqG5WHkb'
+    }
+  })
+    .then(response => response.json())
+    .then(body => {
+      const imageList = body.photos.map((photo) => (
+        `<img src="${photo.src.large}"/>`
+      ))
+
+      
+      return imageList
+    })
+    .then(list => {
+      document.getElementById('images').innerHTML = list
+    })
+    .catch(err => {debugger})
+  }
+ 
+</script>
+</html>
